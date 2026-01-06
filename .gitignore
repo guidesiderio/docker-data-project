@@ -1,0 +1,52 @@
+# =========================
+# 🔐 Variáveis de ambiente
+# =========================
+.env
+
+# =========================
+# 🐳 Docker
+# =========================
+*.log
+docker-data-project/.docker/
+.pgdata/
+pg_data/
+
+# =========================
+# 🐍 Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.env/
+
+# =========================
+# 📓 Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# 📊 Dados (NÃO versionar)
+# =========================
+data/raw/
+data/processed/
+
+# =========================
+# 🧠 VS Code
+# =========================
+.vscode/
+
+# =========================
+# 🖥️ Sistema Operacional
+# =========================
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~

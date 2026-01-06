@@ -2,22 +2,32 @@ services:
   postgres:
     image: postgres:16
     container_name: pg_dados
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      TZ: America/Sao_Paulo
+    restart: always
+    env_file: .env
     ports:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 20
+
+  etl:
+    build:
+      context: .
+      dockerfile: etl/Dockerfile
+    container_name: etl_runner
+    env_file: .env
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
 
 volumes:
   pg_data:

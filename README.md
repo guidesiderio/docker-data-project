@@ -30,7 +30,10 @@ Projeto de ETL com `Python`, `Pandas`, `PostgreSQL` e `Docker` para simular um f
 
 - Python 3.12
 - Pandas
+- Matplotlib
 - SQLAlchemy
+- nbclient
+- nbformat
 - PostgreSQL 16
 - Docker Compose
 
@@ -79,6 +82,22 @@ Esse comando:
 - cria a tabela `vendas` com o script em `sql/`
 - executa o container `etl`
 - limpa a tabela e carrega os dados tratados
+
+## Como executar o notebook
+
+Depois de rodar o ETL e carregar os dados no PostgreSQL, voce pode abrir o notebook:
+
+```bash
+jupyter notebook notebook/01_exploratory_analysis.ipynb
+```
+
+O notebook:
+
+- carrega as credenciais do arquivo `.env`
+- consulta a tabela `vendas` no PostgreSQL
+- gera tabelas-resumo e graficos de exploracao
+
+Se quiser executar todas as celulas de forma automatica, use um ambiente com as dependencias de `requirements.txt` instaladas.
 
 ## Fluxo do ETL
 

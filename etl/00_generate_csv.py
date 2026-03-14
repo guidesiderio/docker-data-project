@@ -52,13 +52,3 @@ print("\nQuantidade inválida:", (df["quantidade"] <= 0).sum())
 print("Preço inválido:", (df["preco_unit"] <= 0).sum())
 print("Categorias nulas:", df["categoria"].isna().sum())
 print("UF em branco:", (df["uf"].str.strip() == "").sum())
-
-
-# # Verificação dos dados brutos
-# df = pd.read_csv("../data/raw/vendas_raw.csv")
-
-# print(df.info())
-# print("\nQuantidade inválida:", (df["quantidade"] <= 0).sum())
-# print("Preço inválido:", (df["preco_unit"] <= 0).sum())
-# print("Categorias nulas:", df["categoria"].isna().sum())
-# print("UF em branco:", (df["uf"].str.strip() == "").sum())

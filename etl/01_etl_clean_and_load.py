@@ -72,13 +72,3 @@ df.to_sql("vendas", engine, if_exists="append", index=False)
 print("ETL concluído com sucesso (clean + load)")
 print(f"Linhas carregadas: {len(df)}")
 print(f"CSV limpo salvo em: {OUTPUT_PATH.resolve()}")
-
-
-# # Verificação dos dados limpos
-# df = pd.read_csv("./data/processed/vendas_clean.csv")
-
-# print(df.info())
-# print("\nQuantidade inválida:", (df["quantidade"] <= 0).sum())
-# print("Preço inválido:", (df["preco_unit"] <= 0).sum())
-# print("Categorias nulas:", df["categoria"].isna().sum())
-# print("UF em branco:", (df["uf"].str.strip() == "").sum())

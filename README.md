@@ -40,7 +40,6 @@ Projeto de ETL com `Python`, `Pandas`, `PostgreSQL` e `Docker` para simular um f
 ## Pré-requisitos
 
 - Docker e Docker Compose instalados
-- Python 3.12+ instalado localmente caso você queira gerar o CSV fora do container
 
 ## Variáveis de ambiente
 
@@ -54,23 +53,7 @@ POSTGRES_PASSWORD=postgres
 
 ## Como rodar
 
-### 1. Criar as pastas de dados
-
-O projeto grava arquivos em `data/raw` e `data/processed`. Crie essas pastas antes de executar:
-
-```bash
-mkdir -p data/raw data/processed
-```
-
-### 2. Gerar o CSV bruto
-
-O ETL principal espera encontrar o arquivo `data/raw/vendas_raw.csv`. Gere esse arquivo com:
-
-```bash
-python3 etl/00_generate_csv.py
-```
-
-### 3. Subir o banco e executar o ETL
+### 1. Subir o banco e executar o pipeline completo
 
 ```bash
 docker compose up --build
@@ -80,8 +63,13 @@ Esse comando:
 
 - sobe o PostgreSQL
 - cria a tabela `vendas` com o script em `sql/`
-- executa o container `etl`
+- executa o job `generate_raw`
+- executa o job `etl`
+- gera `data/raw/vendas_raw.csv` no host
+- gera `data/processed/vendas_clean.csv` no host
 - limpa a tabela e carrega os dados tratados
+
+O pipeline agora é 100% executável via Docker. Não é mais necessário gerar o CSV bruto manualmente antes do Compose.
 
 ## Como executar o notebook
 
@@ -100,6 +88,10 @@ O notebook:
 Se quiser executar todas as celulas de forma automatica, use um ambiente com as dependencias de `requirements.txt` instaladas.
 
 ## Fluxo do ETL
+
+### Geração do bruto
+
+O job `generate_raw` cria o arquivo `data/raw/vendas_raw.csv`.
 
 ### Extração
 
@@ -120,8 +112,10 @@ Insere os dados limpos na tabela `vendas` do PostgreSQL.
 
 ## Arquivos gerados
 
-- `data/raw/vendas_raw.csv`: dados brutos gerados
-- `data/processed/vendas_clean.csv`: dados limpos após o ETL
+- `data/raw/vendas_raw.csv`: dados brutos gerados pelo job Docker `generate_raw`
+- `data/processed/vendas_clean.csv`: dados limpos gerados pelo job Docker `etl`
+
+Os arquivos são salvos dentro do container em `/app/data/...` e persistidos no host via bind mount em `data/...`.
 
 ## Banco de dados
 
@@ -133,7 +127,7 @@ Ela possui colunas para data da venda, categoria, produto, quantidade, preço un
 
 ## Próximos passos sugeridos
 
-- automatizar a geração do CSV dentro do fluxo Docker
 - adicionar consultas SQL de validação
 - expandir o notebook com gráficos e insights
 - incluir testes para o pipeline
+- considerar um serviço de visualização ou BI para consumir a tabela `vendas`
